@@ -1,39 +1,53 @@
-﻿using DevMetrics.Application.Repositories;
+﻿using DevMetrics.Application.Interfaces;
 using DevMetrics.Domain.Entities;
-using DevMetrics.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using DevMetrics.Infrastructure.Shard;
 
 namespace DevMetrics.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DevMetricsDbContext _db;
+        private readonly ShardedDbContextFactory _factory;
+        private readonly ICurrentUserService _currentUser;
 
-        public UserRepository(DevMetricsDbContext db)
+        public UserRepository(ShardedDbContextFactory factory, ICurrentUserService currentUser)
         {
-            _db = db;
+            _factory = factory;
+            _currentUser = currentUser;
         }
 
-        public async Task AddAsync(User user)
+        public Task AddUserAsync(User user)
         {
-            await _db.Users.AddAsync(user);
-            await _db.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public Task<List<User>> GetAllUsersAsync()
         {
-            return await _db.Users.ToListAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<User> GetByIdAsync(long id)
+        public Task<int> GetTotalUserCountAsync()
         {
-            var user = await _db.Users.FindAsync(id);
-            if (user == null)
-            {
-                throw new Exception();
-            }
-            return user;
+            throw new NotImplementedException();
         }
-      
+
+        public Task<User?> GetUserByIdAsync(Guid userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Dictionary<Guid, int>> GetUserProjectCountAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<User>> GetUsersByProjectAsync(Guid projectId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<User>> GetUsersWithNoProjectsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
