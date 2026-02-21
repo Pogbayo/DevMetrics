@@ -1,6 +1,7 @@
 ﻿using DevMetrics.Application.Interfaces;
 using DevMetrics.Domain.Entities;
 using DevMetrics.Infrastructure.Shard;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevMetrics.Infrastructure.Repositories
 {
@@ -15,16 +16,14 @@ namespace DevMetrics.Infrastructure.Repositories
             _currentUser = currentUser;
         }
 
-        public Task AddUserAsync(User user)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public Task<List<User>> GetAllUsersAsync()
         {
             throw new NotImplementedException();
         }
 
+       
         public Task<int> GetTotalUserCountAsync()
         {
             throw new NotImplementedException();

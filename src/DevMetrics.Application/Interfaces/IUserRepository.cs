@@ -4,8 +4,6 @@ namespace DevMetrics.Application.Interfaces
 {
     public interface IUserRepository
     {
-        Task AddUserAsync(User user);
-
         Task<User?> GetUserByIdAsync(Guid userId);
 
         Task<List<User>> GetAllUsersAsync();

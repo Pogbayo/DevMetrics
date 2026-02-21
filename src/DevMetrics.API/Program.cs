@@ -1,4 +1,5 @@
 using DevMetrics.API.Middleware;
+using DevMetrics.Application.Extensions;
 using DevMetrics.Infrastructure.Extensions;
 using DevMetrics.Infrastructure.Shard;
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();

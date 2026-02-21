@@ -4,10 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DevMetrics.Application.Extensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static class ServiceCollectionExtensions
     {
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        public static IServiceCollection AddApplication(this IServiceCollection services)
+        {
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-        return services;
+            return services;
+        }
     }
 }

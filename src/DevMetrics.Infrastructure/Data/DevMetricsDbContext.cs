@@ -8,7 +8,7 @@ namespace DevMetrics.Infrastructure.Data
         public DevMetricsDbContext(DbContextOptions<DevMetricsDbContext> options)
             : base(options) { }
 
-        public DbSet<User> Users => Set<User>();
+        //public DbSet<User> Users => Set<User>();
         public DbSet<Project> Projects => Set<Project>();
         public DbSet<Event> Events => Set<Event>();
         public DbSet<UserProject> UserProjects => Set<UserProject>();
@@ -20,22 +20,22 @@ namespace DevMetrics.Infrastructure.Data
             // ============================
             // USER
             // ============================
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasKey(u => u.Id);
+            //modelBuilder.Entity<User>(entity =>
+            //{
+            //    entity.HasKey(u => u.Id);
 
-                entity.Property(u => u.Username)
-                      .IsRequired()
-                      .HasMaxLength(100);
+            //    entity.Property(u => u.Username)
+            //          .IsRequired()
+            //          .HasMaxLength(100);
 
-                entity.Property(u => u.Email)
-                      .IsRequired()
-                      .HasMaxLength(200);
+            //    entity.Property(u => u.Email)
+            //          .IsRequired()
+            //          .HasMaxLength(200);
 
-                // Unique lookups
-                entity.HasIndex(u => u.Username).IsUnique();
-                entity.HasIndex(u => u.Email).IsUnique();
-            });
+            //    // Unique lookups
+            //    entity.HasIndex(u => u.Username).IsUnique();
+            //    entity.HasIndex(u => u.Email).IsUnique();
+            //});
 
             // ============================
             // PROJECT
@@ -69,10 +69,10 @@ namespace DevMetrics.Infrastructure.Data
                       .IsRequired();
 
                 // Relationships
-                entity.HasOne(e => e.User)
-                      .WithMany(u => u.Events)
-                      .HasForeignKey(e => e.UserId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                //entity.HasOne(e => e.User)
+                //      .WithMany(u => u.Events)
+                //      .HasForeignKey(e => e.UserId)
+                //      .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(e => e.Project)
                       .WithMany(p => p.Events)
@@ -97,9 +97,9 @@ namespace DevMetrics.Infrastructure.Data
                 // Composite primary key
                 entity.HasKey(up => new { up.UserId, up.ProjectId });
 
-                entity.HasOne(up => up.User)
-                      .WithMany(u => u.UserProjects)
-                      .HasForeignKey(up => up.UserId);
+                //entity.HasOne(up => up.User)
+                //      .WithMany(u => u.UserProjects)
+                //      .HasForeignKey(up => up.UserId);
 
                 entity.HasOne(up => up.Project)
                       .WithMany(p => p.UserProjects)
