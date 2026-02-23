@@ -19,10 +19,13 @@ namespace DevMetrics.Infrastructure.Extensions
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            //// 🔹 Central Auth DB (if using one)
-            //services.AddDbContext<AuthDbContext>(options =>
-            //    options.UseSqlServer(
-            //        configuration.GetConnectionString("AuthDatabase")));
+            services.AddDbContext<AuthDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("AuthDatabase")));
+
+            services.AddDbContext<CentralDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("CentralDb")));
 
             services.AddDbContext<DevMetricsDbContext>(options =>
                 options.UseSqlServer(
@@ -54,20 +57,18 @@ namespace DevMetrics.Infrastructure.Extensions
                         };
                 });
 
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
+
             services.AddAuthorization();
 
-            // 🔹 Required for CurrentUserService
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-            // 🔹 Sharding
             services.AddSingleton<ShardResolver>();
             services.AddScoped<ShardedDbContextFactory>();
 
-            // 🔹 Token generator
             services.AddScoped<ITokenGenerator, TokenGenerator>();
 
-            // 🔹 Repositories
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 

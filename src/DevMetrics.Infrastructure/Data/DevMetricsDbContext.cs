@@ -101,9 +101,9 @@ namespace DevMetrics.Infrastructure.Data
                 //      .WithMany(u => u.UserProjects)
                 //      .HasForeignKey(up => up.UserId);
 
-                entity.HasOne(up => up.Project)
-                      .WithMany(p => p.UserProjects)
-                      .HasForeignKey(up => up.ProjectId);
+                //entity.HasOne(up => up.Project)
+                //      .WithMany(p => p.UserProjects)
+                //      .HasForeignKey(up => up.ProjectId);
 
                 // Needed for reverse lookups
                 entity.HasIndex(up => up.ProjectId);

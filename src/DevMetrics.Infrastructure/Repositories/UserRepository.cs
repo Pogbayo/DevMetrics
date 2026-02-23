@@ -1,5 +1,6 @@
 ﻿using DevMetrics.Application.Interfaces;
 using DevMetrics.Domain.Entities;
+using DevMetrics.Infrastructure.Data;
 using DevMetrics.Infrastructure.Shard;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,44 +10,75 @@ namespace DevMetrics.Infrastructure.Repositories
     {
         private readonly ShardedDbContextFactory _factory;
         private readonly ICurrentUserService _currentUser;
-
-        public UserRepository(ShardedDbContextFactory factory, ICurrentUserService currentUser)
+        private readonly AuthDbContext _context;
+        private readonly CentralDbContext _centralDbContext;
+        public UserRepository(ShardedDbContextFactory factory,CentralDbContext centralDbContext, AuthDbContext context, ICurrentUserService currentUser)
         {
+            _centralDbContext = centralDbContext;
+            _context = context;
             _factory = factory;
             _currentUser = currentUser;
         }
 
-      
-
-        public Task<List<User>> GetAllUsersAsync()
+        private DevMetricsDbContext CreateContext()
         {
-            throw new NotImplementedException();
+            var userId = _currentUser.UserId;
+
+                if (!userId.HasValue || userId.Value == Guid.Empty)
+                throw new UnauthorizedAccessException("User ID not found.");
+
+            return _factory.Create(userId.Value);
         }
 
-       
-        public Task<int> GetTotalUserCountAsync()
+
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            var users = await _context.Users.ToListAsync();
+            return users ?? new List<User>();
         }
 
-        public Task<User?> GetUserByIdAsync(Guid userId)
+
+        public async Task<int> GetTotalUserCountAsync()
         {
-            throw new NotImplementedException();
+           return await _context.Users.CountAsync();
         }
 
-        public Task<Dictionary<Guid, int>> GetUserProjectCountAsync()
+        public async Task<User?> GetUserByIdAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FindAsync(userId); 
         }
 
-        public Task<List<User>> GetUsersByProjectAsync(Guid projectId)
+        public async Task<Dictionary<Guid, int>> GetUserProjectCountAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+            {
+                return new Dictionary<Guid, int>();
+            }
+            return new Dictionary<Guid, int> { { user.Id, user.ProjectCount } };
         }
 
-        public Task<List<User>> GetUsersWithNoProjectsAsync()
+        public async Task<List<Guid>> GetUsersByProjectAsync(long projectId)
         {
-            throw new NotImplementedException();
+            var userIds = await _centralDbContext.UserProjects
+                .Where(up => up.ProjectId == projectId)
+                .Select(up => up.UserId)
+                .ToListAsync();
+
+            if (userIds.Count == 0)
+                new List<Guid>();
+            
+            return userIds;
+        }
+
+        public async Task<List<string>> GetUsersWithNoProjectsAsync()
+        {
+            var users = await _context.Users
+                .Where(up => up.ProjectCount == 0)
+                .Select(up => up.Username)
+                .ToListAsync();
+
+            return users;
         }
     }
 }

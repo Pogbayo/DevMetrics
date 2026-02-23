@@ -8,12 +8,12 @@ namespace DevMetrics.Application.Interfaces
 
         Task<List<User>> GetAllUsersAsync();
 
-        Task<List<User>> GetUsersByProjectAsync(Guid projectId);
+        Task<List<Guid>> GetUsersByProjectAsync(long projectId);
 
         Task<int> GetTotalUserCountAsync();
 
-        Task<Dictionary<Guid, int>> GetUserProjectCountAsync();
+        Task<Dictionary<Guid, int>> GetUserProjectCountAsync(Guid userId);
 
-        Task<List<User>> GetUsersWithNoProjectsAsync();
+        Task<List<string>> GetUsersWithNoProjectsAsync();
     }
 }

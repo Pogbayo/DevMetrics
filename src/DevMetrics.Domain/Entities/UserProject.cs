@@ -1,6 +1,4 @@
-﻿
-
-namespace DevMetrics.Domain.Entities
+﻿namespace DevMetrics.Domain.Entities
 {
     public class UserProject
     {
@@ -8,7 +6,7 @@ namespace DevMetrics.Domain.Entities
         //public User User { get; set; } = new User();
 
         public long ProjectId { get; set; }
-        public Project Project { get; set; } = new Project();
+        //public Project Project { get; set; } = new Project();
 
         public DateTime JoinedAt { get; set; }
     }
