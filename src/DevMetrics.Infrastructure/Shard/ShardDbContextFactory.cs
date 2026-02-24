@@ -22,5 +22,14 @@ namespace DevMetrics.Infrastructure.Shard
 
             return new DevMetricsDbContext(options);
         }
+        public DevMetricsDbContext CreateForShard(int shardNumber)
+        {
+            var connectionString = _resolver.ResolveForShard(shardNumber);  
+            var options = new DbContextOptionsBuilder<DevMetricsDbContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+            return new DevMetricsDbContext(options);
+        }
+
     }
 }

@@ -30,6 +30,24 @@ namespace DevMetrics.Infrastructure.Shard
 
             return connectionString;
         }
+
+        public string ResolveForShard(int shardNumber)
+        {
+            var connectionString = shardNumber switch
+            {
+                0 => _config.GetConnectionString("Shard1"),
+                1 => _config.GetConnectionString("Shard2"),
+                2 => _config.GetConnectionString("Shard3"),
+                _ => throw new Exception("Invalid shard")
+            };
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException($"Connection string for shard {shardNumber + 1} is not configured.");
+            }
+
+            return connectionString;
+        }
     }
 
 }

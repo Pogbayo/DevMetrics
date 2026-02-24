@@ -1,4 +1,5 @@
-﻿using DevMetrics.Domain.Entities;
+﻿using DevMetrics.Application.DTOs;
+using DevMetrics.Domain.Entities;
 
 namespace DevMetrics.Application.Interfaces
 {
@@ -6,16 +7,18 @@ namespace DevMetrics.Application.Interfaces
     {
         Task AddProjectAsync(Project project);
 
-        Task<Project?> GetProjectByIdAsync(Guid projectId);
+        Task<Project?> GetProjectByIdAsync(long projectId);
 
-        Task<List<Project>> GetAllProjectsAsync();
-
+        Task<PaginatedResult<Project>> GetAllProjectsAsync(int pageNumber = 1, int pageSize = 10);
         Task<List<Project>> GetProjectsByUserAsync(Guid userId);
 
-        Task<int> GetTotalProjectCountAsync();
+        Task<int> GetTotalProjectCountAsync(int shardNumber);
 
-        Task<Dictionary<Guid, int>> GetProjectUserCountAsync();
+        Task<PaginatedResult<Project>> GetAllProjectsByShardAsync(
+            int shardNumber,
+            int pageNumber = 1,
+            int pageSize = 10);
 
-        Task<List<Project>> GetProjectsWithNoUsersAsync();
+
     }
 }
