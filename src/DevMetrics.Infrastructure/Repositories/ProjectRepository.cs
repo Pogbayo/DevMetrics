@@ -59,7 +59,7 @@ namespace DevMetrics.Infrastructure.Repositories
                 TotalPages = (int)Math.Ceiling(total / (double)pageSize),
             };
         }
-
+ 
         public async Task<Project?> GetProjectByIdAsync(long projectId)
         {
             var userId = await  _centralDbContext.UserProjects

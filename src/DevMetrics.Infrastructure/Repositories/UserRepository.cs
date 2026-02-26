@@ -50,7 +50,7 @@ namespace DevMetrics.Infrastructure.Repositories
 
         public async Task<Dictionary<Guid, int>> GetUserProjectCountAsync(Guid userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == Guid.Parse(userId);
             if (user == null)
             {
                 return new Dictionary<Guid, int>();
